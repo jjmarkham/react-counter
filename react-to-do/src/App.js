@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-
-import './App.css';
 import ToDo from './components/ToDo.js';
+import './App.css';
 
 class App extends Component {
   constructor(props) {
@@ -34,13 +33,30 @@ class App extends Component {
     this.setState({ todos: todos });
   }
 
+  deleteTodo = (props)=>{
+    const { todos } =this.state;
+    todos.splice(props, 1);
+    this.setState({
+      todos,
+    });
+  }
+
+
+
   render() {
     return (
       <div className="App">
         <ul>
-        { this.state.todos.map( (todo, index) =>
-          <ToDo key={ index }  description={ todo.description } isCompleted={ todo.isCompleted } toggleComplete={ () => this.toggleComplete(index) }/>
-        )}
+          {
+            this.state.todos.map( (todo, index) =>
+              <ToDo
+                  key={ index }
+                  description={ todo.description }
+                  isCompleted={ todo.isCompleted }
+                  toggleComplete={ () => { this.toggleComplete(index) } }
+                  deleteTodo={ (e, index) => { this.deleteTodo(e, index) } }
+                />
+              ) }
         </ul>
         <form onSubmit={ (e) => this.handleSubmit(e) }>
           <input type="text" value={this.state.newTodoDescription } onChange={ (e) => this.handleChange(e) }/>
